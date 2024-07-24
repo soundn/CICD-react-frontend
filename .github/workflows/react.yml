@@ -56,7 +56,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
             sudo apt update && sudo apt upgrade -y
-            sudp apt install nginx
+            sudo apt install nginx
             sudo systemctl start nginx
             sudo cp -r /dist/* /var/www/html
             sudo systemctl restart nginx
