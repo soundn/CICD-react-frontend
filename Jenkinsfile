@@ -77,4 +77,5 @@ pipeline {
         success {
             slackSend channel: 'C07E0GYJ0KB', message: 'React-frontend built and deployed Successfully!!'
         }
+    }    
 }
