@@ -78,11 +78,11 @@ pipeline {
             slackSend channel: 'C07E0GYJ0KB', message: 'React-frontend built and deployed Successfully!!'
         }
 
-        always{
+        always {
             slackSend channel: 'C07E0GYJ0KB', message: 'Pipeline was Triggered!!'
         }
       
-        failure{
+        failure {
             slackSend channel: 'C07E0GYJ0KB', message: 'React-frontend Deployment Failed!!'
         }
         
