@@ -83,7 +83,7 @@ pipeline {
         }
       
         failure {
-            slackSend channel: 'C07E0GYJ0KB', message: 'React-frontend Deployment Failed!!'
+            slackSend channel: 'C07E0GYJ0KB', message: 'React-frontend Deployment Failed o!!'
         }
         
     }
