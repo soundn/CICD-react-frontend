@@ -3,7 +3,7 @@ on:
   push:
     branches: [ "docker" ]
 jobs:
-  build:
+  build-and-push-to-dockerhub:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,7 +25,7 @@ jobs:
   
   Deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-and-push-to-dockerhub
     steps:
     - name: Deploy to Linode instance
       uses: longaodai/ssh-server@v2.0.0
