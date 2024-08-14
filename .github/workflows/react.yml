@@ -34,8 +34,10 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         commands: |
-          cd /CICD-react-frontend
+          cd /root/CICD-react-frontend
           sudo git pull origin
-          sudo docker-compose up
+          sudo docker-compose pull
+          sudo docker-compose up --force-recreate
+
           
           
