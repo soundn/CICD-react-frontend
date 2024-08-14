@@ -28,13 +28,10 @@ jobs:
     needs: build
     steps:
     - name: Deploy to Linode instance
-      uses: appleboy/ssh-action@master
+      uses: longaodai/ssh-server@v2.0.0
       with:
         host: ${{ secrets.HOST }}
-        username: ${{ secrets.USER }}
-        key: ${{ secrets.PRIVATE_KEY }}
-        script: |
-          cd /CICD-react-frontend
-          sudo git pull origin
-          sudo docker-compose pull
-          sudo docker-compose up --force-recreate
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        commands: 'cd /CICD-react-frontend && sudo git pull origin && sudo docker-compose pull && sudo docker-compose up --force-recreate'
+          
