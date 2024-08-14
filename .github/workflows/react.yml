@@ -36,6 +36,6 @@ jobs:
         commands: |
           cd /CICD-react-frontend
           sudo git pull origin
-          sudo docker-compose 
-          sudo docker-compose up --force-recreate
+          sudo docker-compose up
+          
           
