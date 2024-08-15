@@ -24,12 +24,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: soundnw/fullstack:${{ env.TAG }}
-
-    - name: Set output IMAGE_TAG
-      run: echo "IMAGE_TAG=${{ env.TAG }}" >> $GITHUB_ENV
-      id: output
-      
+        tags: soundnw/fullstack:${{ steps.tag.outputs.TAG }}
   Deploy:
     runs-on: ubuntu-latest
     needs: build-and-push-to-dockerhub 
@@ -37,16 +32,13 @@ jobs:
     - name: Deploy to Server
       uses: appleboy/ssh-action@master
       env:
-        IMAGE_TAG: ${{ env.IMAGE_TAG }}
+        IMAGE_TAG: ${{ needs.build-and-push-to-dockerhub.outputs.image_tag }}
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USER }}
         key: ${{ secrets.PRIVATE_KEY }}
         envs: IMAGE_TAG
         script: |
-          # Debugging: print the IMAGE_TAG
-          echo "Deploying with IMAGE_TAG=${IMAGE_TAG}"
-        
           # Navigate to the correct directory
           cd /root/CICD-react-frontend
 
