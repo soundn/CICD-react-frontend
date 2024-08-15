@@ -50,7 +50,7 @@ jobs:
           sudo git pull origin dockerimage
 
           # Update Docker Compose file
-          sed -i '/services:/,/ports:/ s|image:.*|image: soundnw/fullstack:'"$IMAGE_TAG"'|' docker-compose.yml
+          sed -i "/image:/c\    image: soundnw/fullstack:${IMAGE_TAG}" docker-compose.yml
 
           # Restart
           docker-compose down
