@@ -39,6 +39,9 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         envs: IMAGE_TAG
         script: |
+          # Debugging: print the IMAGE_TAG
+          echo "Deploying with IMAGE_TAG=${IMAGE_TAG}"
+        
           # Navigate to the correct directory
           cd /root/CICD-react-frontend
 
