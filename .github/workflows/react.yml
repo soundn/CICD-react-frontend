@@ -48,7 +48,8 @@ jobs:
 
           # Update Docker Compose file
           cat docker-compose.yml
-          sed -i '/services:/,/ports:/ s|image:.*|image: soundnw/fullstack:'"$IMAGE_TAG"'|' docker-compose.yml
+          sed -i "/image:/c\    image: soundnw/fullstack:${IMAGE_TAG}" docker-compose.yml
+
           cat docker-compose.yml
 
           # Restart
