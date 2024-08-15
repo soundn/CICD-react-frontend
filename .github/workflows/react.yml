@@ -45,13 +45,6 @@ jobs:
 
           # Update Docker Compose file
           sed -i '/services:/,/ports:/ s|image:.*|image: soundnw/fullstack:${{ steps.tag.outputs.TAG }}|' docker-compose.yml
-      
-          # Commit and push the changes
-          sudo git config --global user.email "github-actions@example.com"
-          sudo git config --global user.name "GitHub Actions"
-          sudo git add docker-compose.yml
-          sudo git commit -m "Update Docker image tag to ${{ steps.tag.outputs.TAG }}"
-          sudo git push origin dockerimage
 
           # Restart Docker Compose
           docker-compose down
