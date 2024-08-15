@@ -31,10 +31,13 @@ jobs:
     steps:
     - name: Deploy to Server
       uses: appleboy/ssh-action@master
+      env:
+        IMAGE_TAG: ${{ steps.tag.outputs.TAG }}
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USER }}
         key: ${{ secrets.PRIVATE_KEY }}
+        envs: IMAGE_TAG
         script: |
           # Navigate to the correct directory
           cd /root/CICD-react-frontend
@@ -44,9 +47,9 @@ jobs:
           sudo git pull origin dockerimage
 
           # Update Docker Compose file
-          sed -i '/services:/,/ports:/ s|image:.*|image: soundnw/fullstack:${{ steps.tag.outputs.TAG }}|' docker-compose.yml
+          sed -i '/services:/,/ports:/ s|image:.*|image: soundnw/fullstack:'"$IMAGE_TAG"'|' docker-compose.yml
 
-          # Restart Docker Compose
+          # Restart
           docker-compose down
           sudo docker-compose pull
           docker-compose up -d
