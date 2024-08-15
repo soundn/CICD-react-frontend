@@ -28,12 +28,12 @@ jobs:
     needs: build-and-push-to-dockerhub 
     steps:
     - name: Deploy to Linode instance
-      uses: longaodai/ssh-server@v2.0.0
+      uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        commands: |
+        key: ${{ secrets.PRIVATE_KEY }}
+        script: |
           cd /root/CICD-react-frontend
           sudo git checkout docker
           sudo git pull docker
