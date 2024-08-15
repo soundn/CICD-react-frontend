@@ -17,14 +17,17 @@ jobs:
   
     - name: Generate tag
       id: tag
-      run: echo "TAG=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+      run: |
+        TAG=$(date +'%Y%m%d%H%M%S')
+        echo "TAG=$TAG" >> $GITHUB_ENV
+        echo "IMAGE_TAG=$TAG" >> $GITHUB_OUTPUT
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
       with:
         context: .
         push: true
-        tags: soundnw/fullstack:${{ steps.tag.outputs.TAG }}
+        tags: soundnw/fullstack:${{ env.TAG }}
   Deploy:
     runs-on: ubuntu-latest
     needs: build-and-push-to-dockerhub 
@@ -32,7 +35,7 @@ jobs:
     - name: Deploy to Server
       uses: appleboy/ssh-action@master
       env:
-        IMAGE_TAG: ${{ steps.tag.outputs.TAG }}
+        IMAGE_TAG: ${{ needs.build-and-push-to-dockerhub.outputs.IMAGE_TAG }}
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USER }}
