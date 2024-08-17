@@ -1,0 +1,61 @@
+name: Node.js CI
+on:
+  push:
+    branches: [ "main" ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js 
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20.x
+    - run: npm install
+   
+    - name: Build Project
+      run: npm run build
+    
+    - name: Upload artifact to enable deployment
+      uses: actions/upload-artifact@v3
+      with:
+        name: react-app
+        path: ./dist
+
+  Deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: react-app
+          path: ./dist
+
+      - name: Copy files to server  
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.PRIVATE_KEY }} 
+          source: "./dist"
+          target: "/root"
+
+      - name: Install Nginx and Copy code to /var/www/html
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          script: |
+            sudo apt update && sudo apt upgrade -y
+            echo "Successful Cache Update"
+            sudo apt install nginx -y
+            echo "Successful Nginx Installation"
+            sudo systemctl start nginx
+            sudo cp -r dist/* /var/www/html
+            sudo systemctl restart nginx
